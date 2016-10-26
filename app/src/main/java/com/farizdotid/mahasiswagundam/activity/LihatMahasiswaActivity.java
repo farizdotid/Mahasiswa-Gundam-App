@@ -7,12 +7,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.farizdotid.mahasiswagundam.R;
 import com.farizdotid.mahasiswagundam.adapter.MahasiswaAdapter;
 import com.farizdotid.mahasiswagundam.helper.DBHandler;
+import com.farizdotid.mahasiswagundam.helper.RecyclerItemClickListener;
 import com.farizdotid.mahasiswagundam.model.Mahasiswa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LihatMahasiswaActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class LihatMahasiswaActivity extends AppCompatActivity {
     private MahasiswaAdapter adapter;
     private DBHandler dbHandler;
     private TextView txt_resultadapter;
+    private List<Mahasiswa> mahasiswaList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class LihatMahasiswaActivity extends AppCompatActivity {
         cekDataRecyclerView();
     }
 
+    // FUNGSI INI UNTUK MENG-INIT RECYLERVIEW BESERTA ADAPTERNYA
     private void initRecyclerView(){
         recyclerView = (RecyclerView) findViewById(R.id.rv_mahasiswa);
         recyclerView.setHasFixedSize(true);
@@ -40,7 +45,7 @@ public class LihatMahasiswaActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         dbHandler = new DBHandler(LihatMahasiswaActivity.this);
-        List<Mahasiswa> mahasiswaList = dbHandler.getSemuaMahasiswa();
+        mahasiswaList = dbHandler.getSemuaMahasiswa();
         adapter = new MahasiswaAdapter(mahasiswaList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -50,6 +55,7 @@ public class LihatMahasiswaActivity extends AppCompatActivity {
         txt_resultadapter = (TextView) findViewById(R.id.txt_resultadapter);
     }
 
+    // FUNGSI INI UNTUK MENGECEK APAKAH ADA DATA DI DALEM RECYCLERVIEW ATAU TIDAK
     private void cekDataRecyclerView(){
         if (adapter.getItemCount() == 0){
             txt_resultadapter.setVisibility(View.VISIBLE);
@@ -57,6 +63,18 @@ public class LihatMahasiswaActivity extends AppCompatActivity {
         } else {
             txt_resultadapter.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+                            // TODO Handle item click
+                            Mahasiswa mhs = mahasiswaList.get(position);
+                            String nama = mhs.getNama();
+
+                            Toast.makeText(LihatMahasiswaActivity.this, "Klik di " + nama, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+            );
         }
     }
 }

@@ -10,6 +10,9 @@ public class Mahasiswa {
     private String nama;
     private String tempat_lahir;
 
+    public Mahasiswa() {
+    }
+
     public Mahasiswa(String nama, String tempat_lahir) {
         this.nama = nama;
         this.tempat_lahir = tempat_lahir;

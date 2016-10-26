@@ -45,6 +45,8 @@ public class TambahMahasiswaActivity extends AppCompatActivity {
         });
     }
 
+    // FUNGSI INI UNTUK MEMVALIDASI FORM JIKA ADA YANG KOSONG ATAU TIDAK
+    // LALU DILANJUT UNTUK MENJALANKAN PERINTAH SELANJUTNYA
     private void validasiForm(){
         String form_nama = et_nama.getText().toString();
         String form_tempatlahir = et_tempatlahir.getText().toString();
